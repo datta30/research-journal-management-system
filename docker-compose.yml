@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: journal-mysql
+    restart: unless-stopped
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_pass_please_change
+      MYSQL_DATABASE: journal
+      MYSQL_USER: journal_app
+      MYSQL_PASSWORD: journal_pass
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  backend:
+    build: ./backend
+    container_name: journal-backend
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: journal
+      MYSQL_USER: journal_app
+      MYSQL_PASSWORD: journal_pass
+      SERVER_PORT: 8080
+    ports:
+      - "8082:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        REACT_APP_API_URL: http://localhost:8082
+    container_name: journal-frontend
+    depends_on:
+      - backend
+    ports:
+      - "3002:80"
+
+volumes:
+  mysql_data:
