@@ -21,6 +21,24 @@ A comprehensive research journal management platform with submission tracking, p
 ### Database
 - MySQL 8.0
 
+## Quick Start with Docker
+
+### Using Pre-built Images from GHCR
+
+```bash
+# Pull images from GitHub Container Registry
+docker pull ghcr.io/YOUR_USERNAME/journal/backend:latest
+docker pull ghcr.io/YOUR_USERNAME/journal/frontend:latest
+
+# Run with docker-compose
+docker compose up -d
+```
+
+Services will be available at:
+- **Frontend**: http://localhost:3002
+- **Backend API**: http://localhost:8082
+- **MySQL**: localhost:3307
+
 ## Getting Started
 
 ### Prerequisites
@@ -161,6 +179,32 @@ Flyway automatically runs migrations on startup. Migrations are in `backend/src/
 **Frontend can't connect:**
 - Verify `REACT_APP_API_URL` points to correct backend port
 - Check browser console for CORS errors
+
+## CI/CD
+
+The project includes GitHub Actions workflow that automatically:
+- Builds Docker images for backend and frontend
+- Pushes images to GitHub Container Registry (GHCR)
+- Tags images with branch names and commit SHA
+
+### Using GHCR Images
+
+Images are published to:
+- Backend: `ghcr.io/YOUR_USERNAME/journal/backend:latest`
+- Frontend: `ghcr.io/YOUR_USERNAME/journal/frontend:latest`
+
+To use pre-built images, update `docker-compose.yml`:
+
+```yaml
+services:
+  backend:
+    image: ghcr.io/YOUR_USERNAME/journal/backend:latest
+    # ... rest of config
+
+  frontend:
+    image: ghcr.io/YOUR_USERNAME/journal/frontend:latest
+    # ... rest of config
+```
 
 ## Production Notes
 - Change default passwords in `docker-compose.yml`
