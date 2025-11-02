@@ -190,19 +190,19 @@ The project includes GitHub Actions workflow that automatically:
 ### Using GHCR Images
 
 Images are published to:
-- Backend: `ghcr.io/YOUR_USERNAME/journal/backend:latest`
-- Frontend: `ghcr.io/YOUR_USERNAME/journal/frontend:latest`
+- Backend: `ghcr.io/datta30/journal/backend:latest`
+- Frontend: `ghcr.io/datta30/journal/frontend:latest`
 
 To use pre-built images, update `docker-compose.yml`:
 
 ```yaml
 services:
   backend:
-    image: ghcr.io/YOUR_USERNAME/journal/backend:latest
+    image: ghcr.io/datta30/journal/backend:latest
     # ... rest of config
 
   frontend:
-    image: ghcr.io/YOUR_USERNAME/journal/frontend:latest
+    image: ghcr.io/datta30/journal/frontend:latest
     # ... rest of config
 ```
 
